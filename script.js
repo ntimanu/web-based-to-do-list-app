@@ -15,8 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
               category === "Choose category" || task.category === category
           );
     displayTasks(filteredTasks);
-
-    // Update the status based on the selected category
     const statusElement = document.getElementById("status");
     statusElement.textContent =
       category === "Choose category" ? "All Tasks" : `Category: ${category}`;
@@ -52,14 +50,95 @@ document.addEventListener("DOMContentLoaded", function () {
     updateCategoryFilter();
   };
 
-  // Edit task function
+  // Edit task function for inline editing
   window.editTask = function (index) {
-    const newText = prompt("Edit task:", tasks[index].text);
-    if (newText !== null) {
-      tasks[index].text = newText.trim();
+    const taskList = document.getElementById("taskList");
+    const li = taskList.children[index];
+    const span = li.querySelector("span");
+
+    // Store the category for later restoration
+    const categoryContainer = li.querySelector(".category");
+    const originalCategory = categoryContainer.textContent;
+
+    // Create an input field for editing
+    const input = document.createElement("input");
+    input.type = "text";
+    input.value = span.textContent;
+
+    // Replace the span with the input field
+    li.replaceChild(input, span);
+
+    // Hide the category during editing
+    categoryContainer.style.display = "none";
+
+    // Hide the "Edit" and "Delete" buttons during editing
+    const editButton = li.querySelector(".edit");
+    const deleteButton = li.querySelector(".delete");
+    editButton.style.display = "none";
+    deleteButton.style.display = "none";
+
+    // Create a "Save" button with styles
+    const saveButton = document.createElement("button");
+    saveButton.textContent = "Save";
+    saveButton.style.backgroundColor = "#2ecc71";
+    saveButton.style.color = "#ffffff";
+    saveButton.style.padding = "8px 16px";
+    saveButton.style.border = "none";
+    saveButton.style.borderRadius = "4px";
+    saveButton.style.cursor = "pointer";
+    saveButton.style.transition = "background-color 0.3s ease";
+
+    // Hover style for "Save" button
+    saveButton.addEventListener("mouseover", function () {
+      saveButton.style.backgroundColor = "#27ae60";
+    });
+
+    // Revert to original style when not hovering
+    saveButton.addEventListener("mouseout", function () {
+      saveButton.style.backgroundColor = "#2ecc71";
+    });
+
+    // Create a "Cancel" button with styles
+    const cancelButton = document.createElement("button");
+    cancelButton.textContent = "Cancel";
+    cancelButton.style.backgroundColor = "#808080";
+    cancelButton.style.color = "#ffffff";
+    cancelButton.style.padding = "8px 16px";
+    cancelButton.style.border = "none";
+    cancelButton.style.borderRadius = "4px";
+    cancelButton.style.cursor = "pointer";
+    cancelButton.style.transition = "background-color 0.3s ease";
+
+    // Hover style for "Cancel" button
+    cancelButton.addEventListener("mouseover", function () {
+      cancelButton.style.backgroundColor = "#a9a9a9";
+    });
+
+    // Revert to original style when not hovering
+    cancelButton.addEventListener("mouseout", function () {
+      cancelButton.style.backgroundColor = "#808080";
+    });
+
+    // Add event listener to the "Save" button
+    saveButton.addEventListener("click", function () {
+      tasks[index].text = input.value;
+      // Restore the category when saving
+      tasks[index].category = originalCategory;
       displayTasks(tasks);
       updateLocalStorage();
-    }
+    });
+
+    // Add event listener to the "Cancel" button
+    cancelButton.addEventListener("click", function () {
+      displayTasks(tasks);
+    });
+
+    // Append the buttons to the list item
+    li.appendChild(saveButton);
+    li.appendChild(cancelButton);
+
+    // Focus on the input field for immediate editing
+    input.focus();
   };
 
   // Toggle task importance function
@@ -100,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <span class="category">${task.category}</span>
                         <div class="buttons-container">
                             <button class="edit" onclick="editTask(${index})">Edit</button>
-                            <button onclick="deleteTask(${index})">Delete</button>
+                            <button class="delete" onclick="deleteTask(${index})">Delete</button>
                             <button class="important-btn ${
                               task.important ? "important" : ""
                             }" title="Click to ${

@@ -60,13 +60,24 @@ li button {
 li .category {
   font-style: italic;
 }
-.edit {
-  background-color: #2196f3;
-  color: #fff;
+.edit,
+.delete {
+  background-color: #3498db;
+  color: #ffffff;
+  padding: 8px 16px;
   border: none;
-  padding: 5px;
+  border-radius: 4px;
+  margin-right: 8px;
   cursor: pointer;
-  margin-right: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.edit:hover {
+  background-color: #2980b9;
+}
+
+.delete:hover {
+  background-color: #e74c3c;
 }
 
 li.important {
