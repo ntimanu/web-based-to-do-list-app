@@ -73,7 +73,7 @@ Ensure ease of navigation with well-designed input fields, buttons, and lists.]\
 
 ## 🚀 Live Demo
 
-<a href="https://ntimanu.github.io/Portfolio/" name="live-demo">live demo</a>
+<p><a>live demo</a>Coming Soon</p>
 
 ## 💻 Getting Started
 
