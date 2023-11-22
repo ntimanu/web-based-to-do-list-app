@@ -168,26 +168,32 @@ document.addEventListener("DOMContentLoaded", function () {
     const taskList = document.getElementById("taskList");
     taskList.innerHTML = "";
 
-    tasks.forEach((task, index) => {
-      const li = document.createElement("li");
-      li.innerHTML = `<input type="checkbox" ${
-        task.completed ? "checked" : ""
-      } onchange="toggleCompletion(${index})">
-                        <span class="${task.important ? "important" : ""} ${
-        task.completed ? "completed" : ""
-      }" onclick="toggleImportance(${index})">${task.text}</span>
-                        <span class="category">${task.category}</span>
-                        <div class="buttons-container">
-                            <button class="edit" onclick="editTask(${index})">Edit</button>
-                            <button class="delete" onclick="deleteTask(${index})">Delete</button>
-                            <button class="important-btn ${
-                              task.important ? "important" : ""
-                            }" title="Click to ${
-        task.important ? "Unmark" : "Mark"
-      } as Important" onclick="toggleImportance(${index})">&#9733;</button>
-                        </div>`;
-      taskList.appendChild(li);
-    });
+    if (tasks.length === 0) {
+      const noTaskMessage = document.createElement("li");
+      noTaskMessage.textContent = "No task in this category";
+      taskList.appendChild(noTaskMessage);
+    } else {
+      tasks.forEach((task, index) => {
+        const li = document.createElement("li");
+        li.innerHTML = `<input type="checkbox" ${
+          task.completed ? "checked" : ""
+        } onchange="toggleCompletion(${index})">
+                          <span class="${task.important ? "important" : ""} ${
+          task.completed ? "completed" : ""
+        }" onclick="toggleImportance(${index})">${task.text}</span>
+                          <span class="category">${task.category}</span>
+                          <div class="buttons-container">
+                              <button class="edit" onclick="editTask(${index})">Edit</button>
+                              <button class="delete" onclick="deleteTask(${index})">Delete</button>
+                              <button class="important-btn ${
+                                task.important ? "important" : ""
+                              }" title="Click to ${
+          task.important ? "Unmark" : "Mark"
+        } as Important" onclick="toggleImportance(${index})">&#9733;</button>
+                          </div>`;
+        taskList.appendChild(li);
+      });
+    }
 
     updateCategoryFilter();
   }
