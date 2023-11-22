@@ -73,7 +73,7 @@ Ensure ease of navigation with well-designed input fields, buttons, and lists.]\
 
 ## 🚀 Live Demo
 
-<p><a>live demo</a> Coming Soon</p>
+<a href="https://ntimanu.github.io/web-based-to-do-list-app/">live demo</a>
 
 ## 💻 Getting Started
 
